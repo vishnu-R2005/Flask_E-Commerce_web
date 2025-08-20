@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+{% if cart_items %}
+<form method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="payment" class="form-label">Payment Method</label>
+        <select class="form-select" id="payment" name="payment" required>
+            <option value="cod">Cash on Delivery</option>
+            <option value="online">Online Payment</option>
+        </select>
+    </div>
+    <h4 class="mb-3">Order Summary</h4>
+    <ul class="list-group mb-3">
+        {% for item in cart_items %}
+        <li class="list-group-item d-flex justify-content-between">
+            {{ item.name }} x {{ item.quantity }}
+            <span>₹{{ item.price * item.quantity }}</span>
+        </li>
+        {% endfor %}
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Total</strong>
+            <strong>₹{{ grand_total }}</strong>
+        </li>
+    </ul>
+    <button type="submit" class="btn btn-primary">Place Order</button>
+</form>
+{% else %}
+<p>Your cart is empty. <a href="{{ url_for('main.home') }}">Shop now</a></p>
+{% endif %}
+{% endblock %}

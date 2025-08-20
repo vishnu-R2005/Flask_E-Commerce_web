@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container login_container container-fluid " style="min-height: 80vh;">
+    <div class="row justify-content-center align-items-center" style="min-height: 100%;">
+        <div class="col-md-6 col-lg-5 ">
+            <div class="card shadow-lg bg-transparent">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Login to MyStore</h3>
+                    
+                    <!-- Display flash messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST" action="{{ url_for('main.login') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Email input -->
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="Enter email") }}
+                            {% if form.email.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Password input -->
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control", placeholder="Enter password") }}
+                            {% if form.password.errors %}
+                                <div class="text-danger small bg-transparent">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Remember me checkbox -->
+                        <div class="mb-3 form-check">
+                            {{ form.remember(class="form-check-input") }}
+                            {{ form.remember.label(class="form-check-label") }}
+                        </div>
+                        
+                        <!-- Login button -->
+                        <div class="d-grid mb-3">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                        
+                        <!-- Forgot password & Sign up -->
+                        <div class="text-center">
+                            <a href="#">Forgot password?</a> | <a href="{{url_for("main.signup")}}">Sign up</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
